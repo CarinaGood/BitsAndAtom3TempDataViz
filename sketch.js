@@ -16,9 +16,6 @@ function setup() {
   angleMode(DEGREES);
   colorMode(HSB, 360, 100, 100, 100);
 
-  print(table.getRowCount() + ' total rows in table');
-  print(table.getColumnCount() + ' total columns in table');
-  print('All cities:', table.getColumn('current_city'));
   drawHorizontalLines();
 
   for (let i = 0; i < table.getRowCount(); i++) {
@@ -29,9 +26,9 @@ function setup() {
     const yPosition = convertDegreesToPosition(meanTemp);
     const futureYPosition = convertDegreesToPosition(futureMeanTemp);
 
+    drawVerticalLines(i);
     drawTemperature(i,futureYPosition, yPosition);
     drawLabelToday(city, i, meanTemp, futureMeanTemp);
-    drawVerticalLines(i, yPosition);
   }
 }
 
@@ -42,19 +39,11 @@ function convertDegreesToPosition(temp) {
 
 function drawTemperature(i,futureY, y) {
   noStroke();
-  linearGradient(
-    width/2, height/5, //Start point
-    width/2, height/5*4, //End point
-    color(0, 70, 70, 100), //Start color
-    color(56, 70, 70, 100), //Middle color
-    color(236, 70, 70, 100), //End color
-  );
   rect(i*xPosDistance, futureY, 20, y-futureY, 4);
 }
 
 function drawLabelToday(txt, xPos, meanTemp, futureMeanTemp) {
   fill(210);
-  noStroke();
   // future temp label
   text(`${parseInt(futureMeanTemp)}°`, xPos*xPosDistance+(xPosDistance/4), convertDegreesToPosition(futureMeanTemp));
   // city label
@@ -63,7 +52,7 @@ function drawLabelToday(txt, xPos, meanTemp, futureMeanTemp) {
   text(`${parseInt(meanTemp)}°`, xPos*xPosDistance+(xPosDistance/4), convertDegreesToPosition(meanTemp));
 }
 
-function drawVerticalLines(i, yPos){
+function drawVerticalLines(i){
   stroke(10); // is needed
   linearGradient(
     width/2, height/2-200, //Start point
@@ -78,7 +67,7 @@ function drawVerticalLines(i, yPos){
 function drawHorizontalLines(){
   for (let i = 6; i < 21; i++) {
     stroke(10);
-    line(-xPosDistance/4 ,convertDegreesToPosition(i), width- width/8, convertDegreesToPosition(i));
+    line(-xPosDistance/4 ,convertDegreesToPosition(i), width - width/8, convertDegreesToPosition(i));
     fill(210);
     text(`${i}°`, -xPosDistance/2 ,convertDegreesToPosition(i));
   }
